@@ -1,4 +1,5 @@
 
+
 // --- START OF INLINED SCRIPT ---
 // FIX: Cast window to `any` to polyfill process.env without TypeScript errors.
 (window as any).process = (window as any).process || { env: {} }; // Polyfill for process.env
@@ -42,7 +43,8 @@ type Page = 'welcome' | 'passage-list' | 'reading' | 'evaluation';
 type SheetSaveStatus = 'idle' | 'saving' | 'success' | 'error';
 
 // --- Inlined from constants.ts ---
-const READING_PASSAGES = [
+// FIX: Explicitly type `READING_PASSAGES` as `Passage[]` to ensure correct type inference for its elements.
+const READING_PASSAGES: Passage[] = [
     // TẬP 1
     { id: 1, volume: 1, title: 'Bài 1: Tôi là học sinh lớp 2', content: 'Ngày khai trường đã đến. Sáng sớm, mẹ mới gọi một câu mà tôi đã vùng dậy, khác hẳn mọi ngày. Loáng một cái, tôi đã chuẩn bị xong mọi thứ. Bố ngạc nhiên nhìn tôi, còn mẹ cười tủm tỉm. Tôi rối rít: “Con muốn đến sớm nhất lớp”.\nTôi háo hức tưởng tượng ra cảnh mình đến đầu tiên, cất tiếng chào thật to những bạn đến sau. Nhưng vừa đến cổng trường, tôi đã thấy mấy bạn cùng lớp đang ríu rít nói cười ở trong sân. Thì ra, không chỉ mình tôi muốn đến sớm nhất. Tôi chào mẹ, chạy ào vào cùng các bạn.' },
     { id: 2, volume: 1, title: 'Bài 2: Ngày hôm qua đâu rồi?', content: 'Em cầm tờ lịch cũ:\n– Ngày hôm qua đâu rồi?\nRa ngoài sân hỏi bố\nXoa đầu em, bố cười:\n\n– Ngày hôm qua ở lại\nTrên cành hoa trong vườn\nNụ hồng lớn lên mãi\nĐợi đến ngày toả hương.\n\n– Ngày hôm qua ở lại\nTrong hạt lúa mẹ trồng\nCánh đồng chờ gặt hái\nChín vàng màu ước mong.\n\n– Ngày hôm qua ở lại\nTrong vở hồng của con\nCon học hành chăm chỉ\nLà ngày qua vẫn còn.' },
@@ -90,7 +92,7 @@ const READING_PASSAGES = [
     { id: 43, volume: 2, title: 'Bài 11: Sự tích cây thì là', content: 'Ngày xưa, cây cối trên trái đất chưa có tên gọi. Trời bèn gọi chúng lên để đặt tên. Cây cối mừng rỡ kéo nhau lên trời. Trời chỉ tay vào từng cây và đặt tên:\n– Chú thì ta đặt tên cho là cây dừa.\n– Chú thì ta đặt tên cho là cây cau.\n– Chú là cây tỏi…\nTrời đặt tên mãi mà vẫn chưa hết. Về sau, Trời chỉ nói vắn tắt:\n– Chú là cây cải.\n– Chú là cây ớt.\nKhi các loài cây đều đã có tên, bỗng một cái cây dáng mảnh khảnh, lá nhỏ xíu đến xin đặt tên.\n– Chú bé tí xíu, chú có ích gì để ta đặt tên nào? – Trời hỏi.\nCây nhỏ liền thưa:\n– Thưa Trời, khi nấu canh riêu cá hoặc làm chả cá, chả mực mà không có con thì mất cả ngon ạ.\nTrời liền bảo:\n– Ừ, để ta nghĩ cho một cái tên. Tên chú thì… là… thì… là…\nTrời còn đang suy nghĩ, cây nhỏ đã chạy đi xa rồi. Nó mừng rỡ khoe với bạn bè:\n– Trời đặt tên cho tôi là cây “thì là” đấy!' },
     { id: 44, volume: 2, title: 'Bài 12: Bờ tre đón khách', content: 'Bờ tre quanh hồ\nSuốt ngày đón khách\nMột đàn cò bạch\nHạ cánh reo mừng\nTre chợt tưng bừng\nNở đầy hoa trắng.\n\nĐến chơi im lặng\nCó bác bồ nông\nĐứng nhìn mênh mông\nIm như tượng đá.\n\nMột chú bói cá\nĐỗ xuống cành mềm\nChú vụt bay lên\nĐậu vào chỗ cũ.\n\nGhé chơi đông đủ\nCả toán chim cu\nCa hát gật gù:\n“Ồ, tre rất mát!”.\n\nKhách còn chú ếch\nÌ oạp vang lừng\nGọi sao tung bừng\nLúc ngày vừa tắt.' },
     { id: 45, volume: 2, title: 'Bài 13: Tiếng chổi tre', content: 'Những đêm hè\nKhi ve ve\nĐã ngủ\nTôi lắng nghe\nTrên đường Trần Phú\nTiếng chổi tre\nXao xác\nHàng me\nTiếng chổi tre\nĐêm hè\nQuét rác...\n\nNhững đêm đông\nKhi cơn dông\nVừa tắt\nTôi lắng nghe\nTrên đường lạng ngắt\nTiếng chổi tre\nChị lao công\nNhư sắt\nNhư đồng\nChị lao công\nĐêm đông\nQuét rác...\n\nNhớ em nghe\nTiếng chổi tre\nChị quét\nNhững đêm hè\nĐêm đông gió rét\nTiếng chổi tre\nSớm tối\nĐi về\nGiữ sạch lề\nĐẹp lối\nEm nghe!' },
-    { id: 46, volume: 2, title: 'Bài 14: Cò non cười rồi', content: 'Mùa xuân đã đến. Cỏ trong công viên bừng tỉnh sau giấc ngủ đông. Từng đàn én én từ phương Nam trở về. Trẻ em chơi đùa dưới ánh mặt trời ấm áp.\nMột hôm, chị én nâu đang sửa soạn đi ngủ thì nghe thấy tiếng khóc thút thít. Lần theo tiếng khóc, én nâu tìm đến công viên nhỏ. Thấy một cây cỏ non đang khóc, én nâu hỏi:\n– Em bị ốm à?\nCỏ non khóc nức lên:\n– Chị ơi, em không đứng thẳng được nữa. Các bạn nhỏ đã đến đây chơi đùa và giẫm lên em.\nÉn nâu lặng đi một phút rồi bỗng reo lên:\n– Đừng khóc nữa! Chị sẽ giúp em.\nThế rồi, én nâu gọi thêm rất nhiều bạn của mình. Suốt đêm, cả đàn én ra sức đi tìm cỏ khô tết thành dòng chữ “Không giẫm chân lên cỏ!” đặt bên cạnh bãi cỏ. Xong việc, én nâu tươi cười bảo cỏ non:\n– Từ nay em yên tâm rồi. Không còn ai giẫm lên em nữa đâu.\nCỏ non nhoẻn miệng cười và cảm ơn chị én nâu.' },
+    { id: 46, volume: 2, title: 'Bài 14: Cò non cười rồi', content: 'Mùa xuân đã đến. Cỏ trong công viên bừng tỉnh sau giấc ngủ đông. Từng đàn én én từ phương Nam trở về. Trẻ em chơi đùa dưới ánh mặt trời ấm áp.\nMột hôm, chị én nâu đang sửa soạn đi ngủ thì nghe thấy tiếng khóc thút thít. Lần theo tiếng khóc, én nâu tìm đến công viên nhỏ. Thấy một cây cỏ non đang khóc, én nâu hỏi:\n– Em bị ốm à?\nCỏ non khóc nức lên:\n– Chị ơi, em không đứng thẳng được nữa. Các bạn nhỏ đã đến đây chơi đùa và giẫm lên em.\nÉn nâu lặng đi một phút rồi rồi bỗng reo lên:\n– Đừng khóc nữa! Chị sẽ giúp em.\nThế rồi, én nâu gọi thêm rất nhiều bạn của mình. Suốt đêm, cả đàn én ra sức đi tìm cỏ khô tết thành dòng chữ “Không giẫm chân lên cỏ!” đặt bên cạnh bãi cỏ. Xong việc, én nâu tươi cười bảo cỏ non:\n– Từ nay em yên tâm rồi. Không còn ai giẫm lên em nữa đâu.\nCỏ non nhoẻn miệng cười và cảm ơn chị én nâu.' },
     { id: 47, volume: 2, title: 'Bài 15: Những con sao biển', content: 'Một người đàn ông đang dạo bộ trên bãi biển khi chiều xuống. Biển đông người, nhưng ông lại chú ý đến một cậu bé cứ liên tục cúi xuống nhặt thứ gì đó rồi thả xuống biển.\nTiến lại gần hơn, ông thấy cậu bé đang nhặt những con sao biển bị thuỷ triều đánh dạt lên bờ và thả chúng trở về với đại dương.\n– Cháu đang làm gì vậy? – Người đàn ông hỏi.\nCậu bé trả lời:\n– Những con sao biển này sắp chết vì thiếu nước, cháu muốn giúp chúng.\n– Có hàng ngàn con sao biển như vậy, liệu cháu có thể giúp được tất cả chúng không?\nCậu bé vẫn tiếp tục nhặt những con sao biển khác thả xuống biển và nói với người đàn ông:\n– Cháu cũng biết như vậy, nhưng ít nhất thì cháu cũng cứu được những con sao biển này.\nNgười đàn ông trìu mến nhìn cậu bé và cùng cậu cứu những con sao biển.' },
     { id: 48, volume: 2, title: 'Bài 16: Tạm biệt cánh cam', content: 'Chú cánh cam đi lạc vào nhà Bống. Chân chú bị thương, bước đi tập tễnh. Bống thương quá, đặt cánh cam vào một chiếc lọ nhỏ đựng đầy cỏ. Từ ngày đó, cánh cam trở thành người bạn nhỏ xíu của Bống.\nCánh cam có đôi cánh xanh biếc, óng ánh dưới ánh nắng mặt trời. Mỗi khi nghe tiếng động, chú khẽ hệ ôm cái bụng tròn lẳn, trốn vào đám cỏ rối. Bống chăm sóc cánh cam rất cẩn thận. Hằng ngày, em đều bỏ vào chiếc lọ một chút nước và những ngọn cỏ xanh non.\nNhưng Bống cảm thấy cánh cam vẫn có vẻ ngơ ngác không vui, chắc chú nhớ nhà và nhớ bạn bè. Đoán vậy, Bống mang cánh cam thả ra bãi cỏ sau nhà. Tạm biệt cánh cam bé nhỏ, Bống hi vọng chú sẽ tìm được đường về căn nhà thân thương của mình.' },
     { id: 49, volume: 2, title: 'Bài 17: Những cách chào độc đáo', content: 'Trên thế giới có những cách chào phổ biến như bắt tay, vẫy tay và cúi chào. Ngoài ra, người ta còn có những cách chào nhau rất đặc biệt.\nNgười Ma-ô-ri ở Niu Di-lân chào bằng cách nhẹ nhàng chạm mũi và trán vào nhau. Người Ấn Độ thì chắp hai tay trước ngực, kèm theo một cái cúi đầu. Nhiều người ở Mỹ thì chào bằng cách nắm bàn tay lại và đấm nhẹ vào nắm tay người kia. Còn người Dim-ba-bu-ê lại chào theo cách truyền thống là vỗ tay,... Mỗi cách chào thể hiện một nét riêng trong giao tiếp của người dân ở từng nước.\nCòn em, em chào bạn bằng cách nào?' },
@@ -309,12 +311,11 @@ function useAudioPlayer() {
   const stopAudio = useCallback(() => {
     if (audioSourceRef.current) {
       try {
-        // It's good practice to remove the onended handler before stopping
-        // to prevent it from firing unexpectedly.
+        // Prevent onended from firing when we manually stop.
         audioSourceRef.current.onended = null;
         audioSourceRef.current.stop();
       } catch (e) {
-        // Ignore error if the source was already stopped.
+        // Ignore errors if the source was already stopped.
       }
       audioSourceRef.current = null;
     }
@@ -322,43 +323,47 @@ function useAudioPlayer() {
   }, []);
   
   const playAudio = useCallback(async (base64Audio) => {
-    stopAudio(); 
-
+    // Ensure context exists and is resumed. This is crucial for mobile browsers,
+    // especially when the call is preceded by an `await`.
     if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
       // FIX: Cast window to `any` to access vendor-prefixed webkitAudioContext without a TypeScript error.
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
     }
-    
-    const audioContext = audioContextRef.current;
-    
-    // On some browsers, the AudioContext may be suspended after a period of inactivity
-    // or if the page was loaded in the background. It must be resumed by a user gesture.
-    if (audioContext.state === 'suspended') {
-      await audioContext.resume();
+    if (audioContextRef.current.state === 'suspended') {
+      await audioContextRef.current.resume();
     }
     
+    // Stop any currently playing audio before starting a new one.
+    stopAudio(); 
+
     try {
       setIsPlaying(true);
       const decodedBytes = decode(base64Audio);
-      const audioBuffer = await decodeAudioData(decodedBytes, audioContext);
+      const audioBuffer = await decodeAudioData(decodedBytes, audioContextRef.current);
       
-      const source = audioContext.createBufferSource();
+      const source = audioContextRef.current.createBufferSource();
       source.buffer = audioBuffer;
-      source.connect(audioContext.destination);
+      source.connect(audioContextRef.current.destination);
       source.onended = () => {
-        setIsPlaying(false);
-        audioSourceRef.current = null;
+        // Only update state if this specific source finished playing.
+        // This prevents race conditions if another sound is played quickly.
+        if (audioSourceRef.current === source) {
+          setIsPlaying(false);
+          audioSourceRef.current = null;
+        }
       };
       source.start(0);
       audioSourceRef.current = source;
     } catch (error) {
         console.error('Failed to play audio:', error);
         setIsPlaying(false);
+        audioSourceRef.current = null; // Clean up on error
         throw new Error('Không thể phát âm thanh.');
     }
   }, [stopAudio]);
 
   useEffect(() => {
+    // Cleanup function to close the AudioContext when the component unmounts.
     return () => {
       stopAudio();
       if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
@@ -515,12 +520,15 @@ function WelcomeScreen({ onStart }) {
 }
 
 // --- Inlined from components/PassageList.tsx ---
-function PassageList({ studentInfo, onSelectPassage, onBackToWelcome }) {
-  const passagesVol1 = READING_PASSAGES.filter(p => p.volume === 1);
-  const passagesVol2 = READING_PASSAGES.filter(p => p.volume === 2);
 
-  // FIX: Explicitly type props for PassageCard to resolve TypeScript error with React's special `key` prop.
-  const PassageCard = ({ passage, onSelect }: { passage: Passage, onSelect: (passage: Passage) => void }) => (
+// FIX: Define props via an interface to ensure TypeScript correctly handles React's special 'key' prop and avoids type errors during map rendering.
+interface PassageCardProps {
+    passage: Passage;
+    onSelect: (passage: Passage) => void;
+}
+
+// FIX: Moved PassageCard outside of PassageList to prevent re-definition on every render, which can cause subtle rendering bugs.
+const PassageCard = ({ passage, onSelect }: PassageCardProps) => (
     <button
         onClick={() => onSelect(passage)}
         className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl hover:bg-yellow-50 transition-all text-left transform hover:-translate-y-1 border border-gray-200"
@@ -528,7 +536,18 @@ function PassageList({ studentInfo, onSelectPassage, onBackToWelcome }) {
         <h2 className="text-xl font-bold text-blue-700">{passage.title}</h2>
         <p className="text-gray-500 mt-2 line-clamp-3 leading-snug">{passage.content}</p>
     </button>
-  );
+);
+
+// FIX: Added explicit types for the component's props. This resolves an error where the `onSelect` prop of PassageCard was being inferred as `any`, causing a type mismatch. The error about the 'key' prop is a side-effect of this initial type issue.
+interface PassageListProps {
+    studentInfo: StudentInfo;
+    onSelectPassage: (passage: Passage) => void;
+    onBackToWelcome: () => void;
+}
+
+function PassageList({ studentInfo, onSelectPassage, onBackToWelcome }: PassageListProps) {
+  const passagesVol1 = READING_PASSAGES.filter(p => p.volume === 1);
+  const passagesVol2 = READING_PASSAGES.filter(p => p.volume === 2);
 
   return (
     <div className="min-h-screen bg-blue-50 p-4 sm:p-8">
@@ -994,4 +1013,4 @@ root.render(
   </React.StrictMode>,
 );
 
-// --- END OF INLINED SCRIPT ------ START OF FILE types.ts ------ START OF FILE constants.ts ------ START OF FILE services/geminiService.ts ------ START OF FILE hooks/useAudioRecorder.ts ------ START OF FILE components/WelcomeScreen.tsx ------ START OF FILE components/PassageList.tsx ------ START OF FILE components/ReadingView.tsx ------ START OF FILE components/EvaluationView.tsx ------ START OF FILE components/Spinner.tsx ------ START OF FILE App.tsx ------ START OF FILE services/sheetService.ts ------ START OF FILE hooks/useAudioPlayer.ts ---
+// --- END OF INLINED SCRIPT ------ START OF FILE types.ts ------ START OF FILE constants.ts ------ START OF FILE services/geminiService.ts ------ START OF FILE hooks/useAudioRecorder.ts ------ START OF FILE components/WelcomeScreen.tsx ------ START OF FILE components/PassageList.tsx ------ START OF FILE components/ReadingView.tsx ------ START OF FILE components/EvaluationView.tsx ------ START OF FILE components/Spinner.tsx ------ START OF FILE App.tsx ------ START OF FILE services/sheetService.ts ------ START OF FILE hooks/useAudioPlayer.ts ------ START OF FILE types.ts ------ START OF FILE constants.ts ------ START OF FILE services/geminiService.ts ------ START OF FILE hooks/useAudioRecorder.ts ------ START OF FILE components/WelcomeScreen.tsx ------ START OF FILE components/PassageList.tsx ------ START OF FILE components/ReadingView.tsx ------ START OF FILE components/EvaluationView.tsx ------ START OF FILE components/Spinner.tsx ------ START OF FILE App.tsx ------ START OF FILE services/sheetService.ts ------ START OF FILE hooks/useAudioPlayer.ts ---
