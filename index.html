@@ -1,10 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luyện đọc cho học sinh lớp 2</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.37.1/minified.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,30 +12,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- Babel for JSX and TS transpilation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="importmap">
+    {
+      "imports": {
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "react": "https://esm.sh/react@18.2.0",
+        "@google/genai": "https://esm.sh/@google/genai"
+      }
+    }
+    </script>
     <style>
       body {
         font-family: 'Nunito', sans-serif;
       }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/"
-  }
-}
-</script>
 </head>
   <body class="bg-gray-50">
     <div id="root"></div>
     <script type="text/babel" data-type="module">
 // --- START OF INLINED SCRIPT ---
-window.process = window.process || { env: {} }; // Polyfill for process.env
-window.process.env.API_KEY = 'AIzaSyBL42fp-nL0cAZYDc5etd0Ga5b4I3CoG7I';
 
 // --- External Imports ---
-import React, { useState, useRef, useCallback, useEffect } from 'https://esm.sh/react@18.2.0';
-import ReactDOM from 'https://esm.sh/react-dom@18.2.0/client';
-import { GoogleGenAI, Type, Modality } from 'https://esm.sh/@google/genai';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import ReactDOM from 'react-dom/client';
+import { GoogleGenAI, Type, Modality } from '@google/genai';
 
 // --- Inlined from types.ts ---
 // Note: TypeScript types are stripped by Babel during transpilation.
@@ -119,7 +119,7 @@ const READING_PASSAGES = [
     { id: 43, volume: 2, title: 'Bài 11: Sự tích cây thì là', content: 'Ngày xưa, cây cối trên trái đất chưa có tên gọi. Trời bèn gọi chúng lên để đặt tên. Cây cối mừng rỡ kéo nhau lên trời. Trời chỉ tay vào từng cây và đặt tên:\n– Chú thì ta đặt tên cho là cây dừa.\n– Chú thì ta đặt tên cho là cây cau.\n– Chú là cây tỏi…\nTrời đặt tên mãi mà vẫn chưa hết. Về sau, Trời chỉ nói vắn tắt:\n– Chú là cây cải.\n– Chú là cây ớt.\nKhi các loài cây đều đã có tên, bỗng một cái cây dáng mảnh khảnh, lá nhỏ xíu đến xin đặt tên.\n– Chú bé tí xíu, chú có ích gì để ta đặt tên nào? – Trời hỏi.\nCây nhỏ liền thưa:\n– Thưa Trời, khi nấu canh riêu cá hoặc làm chả cá, chả mực mà không có con thì mất cả ngon ạ.\nTrời liền bảo:\n– Ừ, để ta nghĩ cho một cái tên. Tên chú thì… là… thì… là…\nTrời còn đang suy nghĩ, cây nhỏ đã chạy đi xa rồi. Nó mừng rỡ khoe với bạn bè:\n– Trời đặt tên cho tôi là cây “thì là” đấy!' },
     { id: 44, volume: 2, title: 'Bài 12: Bờ tre đón khách', content: 'Bờ tre quanh hồ\nSuốt ngày đón khách\nMột đàn cò bạch\nHạ cánh reo mừng\nTre chợt tưng bừng\nNở đầy hoa trắng.\n\nĐến chơi im lặng\nCó bác bồ nông\nĐứng nhìn mênh mông\nIm như tượng đá.\n\nMột chú bói cá\nĐỗ xuống cành mềm\nChú vụt bay lên\nĐậu vào chỗ cũ.\n\nGhé chơi đông đủ\nCả toán chim cu\nCa hát gật gù:\n“Ồ, tre rất mát!”.\n\nKhách còn chú ếch\nÌ oạp vang lừng\nGọi sao tung bừng\nLúc ngày vừa tắt.' },
     { id: 45, volume: 2, title: 'Bài 13: Tiếng chổi tre', content: 'Những đêm hè\nKhi ve ve\nĐã ngủ\nTôi lắng nghe\nTrên đường Trần Phú\nTiếng chổi tre\nXao xác\nHàng me\nTiếng chổi tre\nĐêm hè\nQuét rác...\n\nNhững đêm đông\nKhi cơn dông\nVừa tắt\nTôi lắng nghe\nTrên đường lạng ngắt\nTiếng chổi tre\nChị lao công\nNhư sắt\nNhư đồng\nChị lao công\nĐêm đông\nQuét rác...\n\nNhớ em nghe\nTiếng chổi tre\nChị quét\nNhững đêm hè\nĐêm đông gió rét\nTiếng chổi tre\nSớm tối\nĐi về\nGiữ sạch lề\nĐẹp lối\nEm nghe!' },
-    { id: 46, volume: 2, title: 'Bài 14: Cò non cười rồi', content: 'Mùa xuân đã đến. Cỏ trong công viên bừng tỉnh sau giấc ngủ đông. Từng đàn én én từ phương Nam trở về. Trẻ em chơi đùa dưới ánh mặt trời ấm áp.\nMột hôm, chị én nâu đang sửa soạn đi ngủ thì nghe thấy tiếng khóc thút thít. Lần theo tiếng khóc, én nâu tìm đến công viên nhỏ. Thấy một cây cỏ non đang khóc, én nâu hỏi:\n– Em bị ốm à?\nCỏ non khóc nức lên:\n– Chị ơi, em không đứng thẳng được nữa. Các bạn nhỏ đã đến đây chơi đùa và giẫm lên em.\nÉn nâu lặng đi một phút rồi rồi bỗng reo lên:\n– Đừng khóc nữa! Chị sẽ giúp em.\nThế rồi, én nâu gọi thêm rất nhiều bạn của mình. Suốt đêm, cả đàn én ra sức đi tìm cỏ khô tết thành dòng chữ “Không giẫm chân lên cỏ!” đặt bên cạnh bãi cỏ. Xong việc, én nâu tươi cười bảo cỏ non:\n– Từ nay em yên tâm rồi. Không còn ai giẫm lên em nữa đâu.\nCỏ non nhoẻn miệng cười và cảm ơn chị én nâu.' },
+    { id: 46, volume: 2, title: 'Bài 14: Cò non cười rồi', content: 'Mùa xuân đã đến. Cỏ trong công viên bừng tỉnh sau giấc ngủ đông. Từng đàn én én từ phương Nam trở về. Trẻ em chơi đùa dưới ánh mặt trời ấm áp.\nMột hôm, chị én nâu đang sửa soạn đi ngủ thì nghe thấy tiếng khóc thút thít. Lần theo tiếng khóc, én nâu tìm đến công viên nhỏ. Thấy một cây cỏ non đang khóc, én nâu hỏi:\n– Em bị ốm à?\nCỏ non khóc nức lên:\n– Chị ơi, em không đứng thẳng được nữa. Các bạn nhỏ đã đến đây chơi đùa và giẫm lên em.\nÉn nâu lặng đi một phút rồi bỗng reo lên:\n– Đừng khóc nữa! Chị sẽ giúp em.\nThế rồi, én nâu gọi thêm rất nhiều bạn của mình. Suốt đêm, cả đàn én ra sức đi tìm cỏ khô tết thành dòng chữ “Không giẫm chân lên cỏ!” đặt bên cạnh bãi cỏ. Xong việc, én nâu tươi cười bảo cỏ non:\n– Từ nay em yên tâm rồi. Không còn ai giẫm lên em nữa đâu.\nCỏ non nhoẻn miệng cười và cảm ơn chị én nâu.' },
     { id: 47, volume: 2, title: 'Bài 15: Những con sao biển', content: 'Một người đàn ông đang dạo bộ trên bãi biển khi chiều xuống. Biển đông người, nhưng ông lại chú ý đến một cậu bé cứ liên tục cúi xuống nhặt thứ gì đó rồi thả xuống biển.\nTiến lại gần hơn, ông thấy cậu bé đang nhặt những con sao biển bị thuỷ triều đánh dạt lên bờ và thả chúng trở về với đại dương.\n– Cháu đang làm gì vậy? – Người đàn ông hỏi.\nCậu bé trả lời:\n– Những con sao biển này sắp chết vì thiếu nước, cháu muốn giúp chúng.\n– Có hàng ngàn con sao biển như vậy, liệu cháu có thể giúp được tất cả chúng không?\nCậu bé vẫn tiếp tục nhặt những con sao biển khác thả xuống biển và nói với người đàn ông:\n– Cháu cũng biết như vậy, nhưng ít nhất thì cháu cũng cứu được những con sao biển này.\nNgười đàn ông trìu mến nhìn cậu bé và cùng cậu cứu những con sao biển.' },
     { id: 48, volume: 2, title: 'Bài 16: Tạm biệt cánh cam', content: 'Chú cánh cam đi lạc vào nhà Bống. Chân chú bị thương, bước đi tập tễnh. Bống thương quá, đặt cánh cam vào một chiếc lọ nhỏ đựng đầy cỏ. Từ ngày đó, cánh cam trở thành người bạn nhỏ xíu của Bống.\nCánh cam có đôi cánh xanh biếc, óng ánh dưới ánh nắng mặt trời. Mỗi khi nghe tiếng động, chú khẽ hệ ôm cái bụng tròn lẳn, trốn vào đám cỏ rối. Bống chăm sóc cánh cam rất cẩn thận. Hằng ngày, em đều bỏ vào chiếc lọ một chút nước và những ngọn cỏ xanh non.\nNhưng Bống cảm thấy cánh cam vẫn có vẻ ngơ ngác không vui, chắc chú nhớ nhà và nhớ bạn bè. Đoán vậy, Bống mang cánh cam thả ra bãi cỏ sau nhà. Tạm biệt cánh cam bé nhỏ, Bống hi vọng chú sẽ tìm được đường về căn nhà thân thương của mình.' },
     { id: 49, volume: 2, title: 'Bài 17: Những cách chào độc đáo', content: 'Trên thế giới có những cách chào phổ biến như bắt tay, vẫy tay và cúi chào. Ngoài ra, người ta còn có những cách chào nhau rất đặc biệt.\nNgười Ma-ô-ri ở Niu Di-lân chào bằng cách nhẹ nhàng chạm mũi và trán vào nhau. Người Ấn Độ thì chắp hai tay trước ngực, kèm theo một cái cúi đầu. Nhiều người ở Mỹ thì chào bằng cách nắm bàn tay lại và đấm nhẹ vào nắm tay người kia. Còn người Dim-ba-bu-ê lại chào theo cách truyền thống là vỗ tay,... Mỗi cách chào thể hiện một nét riêng trong giao tiếp của người dân ở từng nước.\nCòn em, em chào bạn bằng cách nào?' },
@@ -139,15 +139,7 @@ const READING_PASSAGES = [
 ];
 
 // --- Inlined from services/geminiService.ts ---
-let ai;
-let geminiInitializationError = null;
-
-try {
-    ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-} catch (e) {
-    console.error("Lỗi khởi tạo Gemini AI:", e);
-    geminiInitializationError = "Không thể khởi tạo dịch vụ AI. Vui lòng đảm bảo API Key đã được cấu hình đúng trong môi trường.";
-}
+const ai = new GoogleGenAI({ apiKey: 'AIzaSyBL42fp-nL0cAZYDc5etd0Ga5b4I3CoG7I' });
 
 const schema = {
     type: Type.OBJECT,
@@ -182,7 +174,6 @@ const schema = {
 
 
 async function evaluateReading(passageText, audioBase64, mimeType) {
-    if (geminiInitializationError) throw new Error(geminiInitializationError);
     try {
         const prompt = `Bạn là một giám khảo chấm thi đọc Tiếng Việt cho học sinh lớp 2, yêu cầu sự chính xác và nghiêm khắc.
         Nhiệm vụ của bạn là đánh giá khả năng đọc của một học sinh dựa trên đoạn văn gốc và file ghi âm.
@@ -226,7 +217,6 @@ async function evaluateReading(passageText, audioBase64, mimeType) {
 }
 
 async function generateSpeech(text) {
-    if (geminiInitializationError) throw new Error(geminiInitializationError);
     try {
         const instructedText = text;
 
@@ -335,37 +325,12 @@ function useAudioPlayer() {
   const audioContextRef = useRef(null);
   const audioSourceRef = useRef(null);
 
-  // This function MUST be called synchronously inside a user gesture handler (e.g., onClick)
-  // BEFORE any `await` calls. It "unlocks" the AudioContext, which is crucial for
-  // browsers like Safari on iOS that suspend audio until a user interaction.
-  const unlockAudioContext = useCallback(() => {
-    if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
-      audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
-    }
-    
-    // If the context is suspended, we need to resume it.
-    // The most reliable way to do this is to play a silent buffer.
-    if (audioContextRef.current.state === 'suspended') {
-      // We can also call resume() which returns a promise. We'll fire and forget here,
-      // and await it properly in playAudio. But the silent buffer is the key.
-      audioContextRef.current.resume();
-
-      const buffer = audioContextRef.current.createBuffer(1, 1, 22050);
-      const source = audioContextRef.current.createBufferSource();
-      source.buffer = buffer;
-      source.connect(audioContextRef.current.destination);
-      source.start(0);
-    }
-  }, []);
-
   const stopAudio = useCallback(() => {
     if (audioSourceRef.current) {
       try {
-        // Prevent onended from firing when we manually stop.
-        audioSourceRef.current.onended = null;
         audioSourceRef.current.stop();
       } catch (e) {
-        // Ignore errors if the source was already stopped.
+        // Ignore error if already stopped
       }
       audioSourceRef.current = null;
     }
@@ -373,48 +338,36 @@ function useAudioPlayer() {
   }, []);
   
   const playAudio = useCallback(async (base64Audio) => {
-     // Ensure the context exists, as unlockAudioContext should have been called.
-    if (!audioContextRef.current) {
-        console.error('AudioContext not prepared. Call unlockAudioContext() inside a user gesture handler.');
-        // As a fallback, try to create it, but it may fail on some browsers.
-        unlockAudioContext();
-    }
-    
-    // Now we can safely await the resume() promise, which was initiated earlier.
-    if (audioContextRef.current.state === 'suspended') {
-      await audioContextRef.current.resume();
-    }
-    
     stopAudio(); 
 
+    if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
+      audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+    }
+    
+    const audioContext = audioContextRef.current;
+    
     try {
       setIsPlaying(true);
       const decodedBytes = decode(base64Audio);
-      const audioBuffer = await decodeAudioData(decodedBytes, audioContextRef.current);
+      const audioBuffer = await decodeAudioData(decodedBytes, audioContext);
       
-      const source = audioContextRef.current.createBufferSource();
+      const source = audioContext.createBufferSource();
       source.buffer = audioBuffer;
-      source.connect(audioContextRef.current.destination);
+      source.connect(audioContext.destination);
       source.onended = () => {
-        // Only update state if this specific source finished playing.
-        // This prevents race conditions if another sound is played quickly.
-        if (audioSourceRef.current === source) {
-          setIsPlaying(false);
-          audioSourceRef.current = null;
-        }
+        setIsPlaying(false);
+        audioSourceRef.current = null;
       };
       source.start(0);
       audioSourceRef.current = source;
     } catch (error) {
         console.error('Failed to play audio:', error);
         setIsPlaying(false);
-        audioSourceRef.current = null; // Clean up on error
         throw new Error('Không thể phát âm thanh.');
     }
-  }, [stopAudio, unlockAudioContext]);
+  }, [stopAudio]);
 
   useEffect(() => {
-    // Cleanup function to close the AudioContext when the component unmounts.
     return () => {
       stopAudio();
       if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
@@ -423,7 +376,7 @@ function useAudioPlayer() {
     };
   }, [stopAudio]);
 
-  return { isPlaying, playAudio, stopAudio, unlockAudioContext };
+  return { isPlaying, playAudio, stopAudio };
 }
 
 // --- Inlined from hooks/useAudioRecorder.ts ---
@@ -435,36 +388,29 @@ function useAudioRecorder() {
 
   const startRecording = useCallback(async () => {
     setError(null);
-    if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder)) {
-        setError('Trình duyệt của bạn không hỗ trợ ghi âm. Vui lòng cập nhật hoặc dùng trình duyệt khác như Chrome, Firefox.');
-        return;
-    }
-
-    try {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const mediaRecorder = new MediaRecorder(stream);
         mediaRecorderRef.current = mediaRecorder;
         
         mediaRecorder.ondataavailable = (event) => {
-            audioChunksRef.current.push(event.data);
+          audioChunksRef.current.push(event.data);
         };
         
         mediaRecorder.onstart = () => {
-            setIsRecording(true);
-            audioChunksRef.current = [];
+          setIsRecording(true);
+          audioChunksRef.current = [];
         };
 
         mediaRecorder.start();
 
-    } catch (err) {
+      } catch (err) {
         console.error('Error accessing microphone:', err);
-        let message = 'Không thể truy cập micro. Vui lòng cấp quyền sử dụng micro trong trình duyệt.';
-        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-            message = 'Bạn đã không cấp quyền sử dụng micro. Vui lòng làm mới trang và cho phép ứng dụng truy cập micro.';
-        } else if (err.name === 'NotFoundError') {
-            message = 'Không tìm thấy thiết bị micro nào trên máy của bạn.';
-        }
-        setError(message);
+        setError('Không thể truy cập micro. Vui lòng cấp quyền sử dụng micro trong trình duyệt.');
+      }
+    } else {
+      setError('Trình duyệt không hỗ trợ ghi âm.');
     }
   }, []);
 
@@ -477,12 +423,8 @@ function useAudioRecorder() {
           const reader = new FileReader();
           reader.readAsDataURL(audioBlob);
           reader.onloadend = () => {
-            if (typeof reader.result === 'string') {
-                const base64String = reader.result.split(',')[1];
-                resolve({ audioBase64: base64String, mimeType });
-            } else {
-                reject(new Error('Could not read audio file as base64 string.'));
-            }
+            const base64String = reader.result.split(',')[1];
+            resolve({ audioBase64: base64String, mimeType });
           };
           reader.onerror = (error) => {
               reject(error);
@@ -570,7 +512,11 @@ function WelcomeScreen({ onStart }) {
 }
 
 // --- Inlined from components/PassageList.tsx ---
-const PassageCard = ({ passage, onSelect }) => (
+function PassageList({ studentInfo, onSelectPassage, onBackToWelcome }) {
+  const passagesVol1 = READING_PASSAGES.filter(p => p.volume === 1);
+  const passagesVol2 = READING_PASSAGES.filter(p => p.volume === 2);
+
+  const PassageCard = ({ passage, onSelect }) => (
     <button
         onClick={() => onSelect(passage)}
         className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl hover:bg-yellow-50 transition-all text-left transform hover:-translate-y-1 border border-gray-200"
@@ -578,11 +524,7 @@ const PassageCard = ({ passage, onSelect }) => (
         <h2 className="text-xl font-bold text-blue-700">{passage.title}</h2>
         <p className="text-gray-500 mt-2 line-clamp-3 leading-snug">{passage.content}</p>
     </button>
-);
-
-function PassageList({ studentInfo, onSelectPassage, onBackToWelcome }) {
-  const passagesVol1 = READING_PASSAGES.filter(p => p.volume === 1);
-  const passagesVol2 = READING_PASSAGES.filter(p => p.volume === 2);
+  );
 
   return (
     <div className="min-h-screen bg-blue-50 p-4 sm:p-8">
@@ -624,16 +566,13 @@ function PassageList({ studentInfo, onSelectPassage, onBackToWelcome }) {
 // --- Inlined from components/ReadingView.tsx ---
 function ReadingView({ passage, onBack, onFinishRecording }) {
   const { isRecording, startRecording, stopRecording, error: recorderError } = useAudioRecorder();
-  const { isPlaying: isSamplePlaying, playAudio: playSampleAudio, stopAudio: stopSampleAudio, unlockAudioContext } = useAudioPlayer();
+  const { isPlaying: isSamplePlaying, playAudio: playSampleAudio, stopAudio: stopSampleAudio } = useAudioPlayer();
   const [isGeneratingSpeech, setIsGeneratingSpeech] = useState(false);
   const [ttsError, setTtsError] = useState(null);
 
   const handleListenSample = async () => {
     if (isGeneratingSpeech || isRecording) return;
     
-    // Call unlockAudioContext synchronously at the start of the event handler
-    unlockAudioContext();
-
     stopSampleAudio();
     setIsGeneratingSpeech(true);
     setTtsError(null);
@@ -768,14 +707,11 @@ const SheetSaveStatusIndicator = ({ status }) => {
 };
 
 function EvaluationView({ result, studentInfo, passage, onChooseAnotherPassage, onReadAgain, sheetSaveStatus }) {
-    const { playAudio, isPlaying, unlockAudioContext } = useAudioPlayer();
+    const { playAudio, isPlaying } = useAudioPlayer();
     const [loadingWord, setLoadingWord] = useState(null);
 
     const handlePlayWord = async (word) => {
         if (loadingWord || isPlaying) return; 
-        
-        // Call unlockAudioContext synchronously at the start of the event handler
-        unlockAudioContext();
         
         setLoadingWord(word);
         try {
@@ -1055,12 +991,6 @@ root.render(
 );
 
 // --- END OF INLINED SCRIPT ---
-    </script>
-    <script nomodule>
-      document.body.innerHTML = '<div style="text-align: center; padding: 40px; font-family: \'Nunito\', sans-serif; color: #333;">' +
-        '<h1 style="font-size: 24px; font-weight: bold;">Trình duyệt của bạn đã quá cũ</h1>' +
-        '<p style="font-size: 16px; margin-top: 10px;">Để sử dụng ứng dụng, vui lòng cập nhật trình duyệt hoặc sử dụng một trình duyệt hiện đại hơn như Google Chrome hoặc Firefox.</p>' +
-      '</div>';
     </script>
   </body>
 </html>
