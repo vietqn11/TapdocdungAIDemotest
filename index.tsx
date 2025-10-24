@@ -307,6 +307,20 @@ function useAudioPlayer() {
   const audioContextRef = useRef(null);
   const audioSourceRef = useRef(null);
 
+  // This function MUST be called synchronously inside a user gesture handler (e.g., onClick)
+  // BEFORE any `await` calls. It creates the audio context and initiates the resume process.
+  const prepareAudioContext = useCallback(() => {
+    if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
+      // FIX: Cast window to `any` to access vendor-prefixed webkitAudioContext without a TypeScript error.
+      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
+    }
+    // Fire and forget. The browser will allow the subsequent `await .resume()` to succeed
+    // because it was initiated from a user gesture.
+    if (audioContextRef.current.state === 'suspended') {
+      audioContextRef.current.resume();
+    }
+  }, []);
+
   const stopAudio = useCallback(() => {
     if (audioSourceRef.current) {
       try {
@@ -322,17 +336,18 @@ function useAudioPlayer() {
   }, []);
   
   const playAudio = useCallback(async (base64Audio) => {
-    // Ensure context exists and is resumed. This is crucial for mobile browsers,
-    // especially when the call is preceded by an `await`.
-    if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
-      // FIX: Cast window to `any` to access vendor-prefixed webkitAudioContext without a TypeScript error.
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
+    // Ensure the context exists, as prepareAudioContext should have been called.
+    if (!audioContextRef.current) {
+        console.error('AudioContext not prepared. Call prepareAudioContext() inside a user gesture handler.');
+        // As a fallback, try to create it, but it may fail on some browsers.
+        prepareAudioContext();
     }
+    
+    // Now we can safely await the resume() promise, which was initiated earlier.
     if (audioContextRef.current.state === 'suspended') {
       await audioContextRef.current.resume();
     }
     
-    // Stop any currently playing audio before starting a new one.
     stopAudio(); 
 
     try {
@@ -359,7 +374,7 @@ function useAudioPlayer() {
         audioSourceRef.current = null; // Clean up on error
         throw new Error('Không thể phát âm thanh.');
     }
-  }, [stopAudio]);
+  }, [stopAudio, prepareAudioContext]);
 
   useEffect(() => {
     // Cleanup function to close the AudioContext when the component unmounts.
@@ -371,7 +386,7 @@ function useAudioPlayer() {
     };
   }, [stopAudio]);
 
-  return { isPlaying, playAudio, stopAudio };
+  return { isPlaying, playAudio, stopAudio, prepareAudioContext };
 }
 
 // --- Inlined from hooks/useAudioRecorder.ts ---
@@ -589,12 +604,15 @@ function PassageList({ studentInfo, onSelectPassage, onBackToWelcome }: PassageL
 // --- Inlined from components/ReadingView.tsx ---
 function ReadingView({ passage, onBack, onFinishRecording }) {
   const { isRecording, startRecording, stopRecording, error: recorderError } = useAudioRecorder();
-  const { isPlaying: isSamplePlaying, playAudio: playSampleAudio, stopAudio: stopSampleAudio } = useAudioPlayer();
+  const { isPlaying: isSamplePlaying, playAudio: playSampleAudio, stopAudio: stopSampleAudio, prepareAudioContext } = useAudioPlayer();
   const [isGeneratingSpeech, setIsGeneratingSpeech] = useState(false);
   const [ttsError, setTtsError] = useState(null);
 
   const handleListenSample = async () => {
     if (isGeneratingSpeech || isRecording) return;
+    
+    // Call prepareAudioContext synchronously at the start of the event handler
+    prepareAudioContext();
     
     stopSampleAudio();
     setIsGeneratingSpeech(true);
@@ -730,11 +748,14 @@ const SheetSaveStatusIndicator = ({ status }) => {
 };
 
 function EvaluationView({ result, studentInfo, passage, onChooseAnotherPassage, onReadAgain, sheetSaveStatus }) {
-    const { playAudio, isPlaying } = useAudioPlayer();
+    const { playAudio, isPlaying, prepareAudioContext } = useAudioPlayer();
     const [loadingWord, setLoadingWord] = useState(null);
 
     const handlePlayWord = async (word) => {
         if (loadingWord || isPlaying) return; 
+        
+        // Call prepareAudioContext synchronously at the start of the event handler
+        prepareAudioContext();
         
         setLoadingWord(word);
         try {
@@ -1013,4 +1034,4 @@ root.render(
   </React.StrictMode>,
 );
 
-// --- END OF INLINED SCRIPT ------ START OF FILE types.ts ------ START OF FILE constants.ts ------ START OF FILE services/geminiService.ts ------ START OF FILE hooks/useAudioRecorder.ts ------ START OF FILE components/WelcomeScreen.tsx ------ START OF FILE components/PassageList.tsx ------ START OF FILE components/ReadingView.tsx ------ START OF FILE components/EvaluationView.tsx ------ START OF FILE components/Spinner.tsx ------ START OF FILE App.tsx ------ START OF FILE services/sheetService.ts ------ START OF FILE hooks/useAudioPlayer.ts ---
+// --- END OF INLINED SCRIPT ---
