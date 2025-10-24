@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luyện đọc cho học sinh lớp 2</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.37.1/minified.js" integrity="sha512-3p3kHYB1SvjW1fZvTjLdaLx2Y/cRkWez+V3u2E5H0tH9scv23eI19NvwKkC0WlGfC31Vvj7g28v7aMvo11Jow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.37.1/minified.js" integrity="sha512-0zxr+q1dkyVxy7SJTrE7TT50Sg4/oeu81ahBVgKxCRH+0RW/41t03tCcxnHiGO0DrSzWEQjLW9URQ6+b1KtMlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,6 +23,7 @@
     <div id="root"></div>
     <script type="text/babel" data-type="module">
 // --- START OF INLINED SCRIPT ---
+window.process = window.process || { env: {} }; // Polyfill for process.env
 
 // --- External Imports ---
 import React, { useState, useRef, useCallback, useEffect } from 'https://esm.sh/react@18.2.0';
