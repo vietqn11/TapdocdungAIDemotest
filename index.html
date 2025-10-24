@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luyện đọc cho học sinh lớp 2</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.37.1/minified.js" integrity="sha512-0zxr+q1dkyVxy7SJTrE7TT50Sg4/oeu81ahBVgKxCRH+0RW/41t03tCcxnHiGO0DrSzWEQjLW9URQ6+b1KtMlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.37.1/minified.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -132,7 +132,15 @@ const READING_PASSAGES = [
 ];
 
 // --- Inlined from services/geminiService.ts ---
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+let ai;
+let geminiInitializationError = null;
+
+try {
+    ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+} catch (e) {
+    console.error("Lỗi khởi tạo Gemini AI:", e);
+    geminiInitializationError = "Không thể khởi tạo dịch vụ AI. Vui lòng đảm bảo API Key đã được cấu hình đúng trong môi trường.";
+}
 
 const schema = {
     type: Type.OBJECT,
@@ -167,6 +175,7 @@ const schema = {
 
 
 async function evaluateReading(passageText, audioBase64, mimeType) {
+    if (geminiInitializationError) throw new Error(geminiInitializationError);
     try {
         const prompt = `Bạn là một giám khảo chấm thi đọc Tiếng Việt cho học sinh lớp 2, yêu cầu sự chính xác và nghiêm khắc.
         Nhiệm vụ của bạn là đánh giá khả năng đọc của một học sinh dựa trên đoạn văn gốc và file ghi âm.
@@ -210,6 +219,7 @@ async function evaluateReading(passageText, audioBase64, mimeType) {
 }
 
 async function generateSpeech(text) {
+    if (geminiInitializationError) throw new Error(geminiInitializationError);
     try {
         const instructedText = text;
 
