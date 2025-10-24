@@ -308,16 +308,26 @@ function useAudioPlayer() {
   const audioSourceRef = useRef(null);
 
   // This function MUST be called synchronously inside a user gesture handler (e.g., onClick)
-  // BEFORE any `await` calls. It creates the audio context and initiates the resume process.
-  const prepareAudioContext = useCallback(() => {
+  // BEFORE any `await` calls. It "unlocks" the AudioContext, which is crucial for
+  // browsers like Safari on iOS that suspend audio until a user interaction.
+  const unlockAudioContext = useCallback(() => {
     if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
       // FIX: Cast window to `any` to access vendor-prefixed webkitAudioContext without a TypeScript error.
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
     }
-    // Fire and forget. The browser will allow the subsequent `await .resume()` to succeed
-    // because it was initiated from a user gesture.
+    
+    // If the context is suspended, we need to resume it.
+    // The most reliable way to do this is to play a silent buffer.
     if (audioContextRef.current.state === 'suspended') {
+      // We can also call resume() which returns a promise. We'll fire and forget here,
+      // and await it properly in playAudio. But the silent buffer is the key.
       audioContextRef.current.resume();
+
+      const buffer = audioContextRef.current.createBuffer(1, 1, 22050);
+      const source = audioContextRef.current.createBufferSource();
+      source.buffer = buffer;
+      source.connect(audioContextRef.current.destination);
+      source.start(0);
     }
   }, []);
 
@@ -336,11 +346,11 @@ function useAudioPlayer() {
   }, []);
   
   const playAudio = useCallback(async (base64Audio) => {
-    // Ensure the context exists, as prepareAudioContext should have been called.
+    // Ensure the context exists, as unlockAudioContext should have been called.
     if (!audioContextRef.current) {
-        console.error('AudioContext not prepared. Call prepareAudioContext() inside a user gesture handler.');
+        console.error('AudioContext not prepared. Call unlockAudioContext() inside a user gesture handler.');
         // As a fallback, try to create it, but it may fail on some browsers.
-        prepareAudioContext();
+        unlockAudioContext();
     }
     
     // Now we can safely await the resume() promise, which was initiated earlier.
@@ -374,7 +384,7 @@ function useAudioPlayer() {
         audioSourceRef.current = null; // Clean up on error
         throw new Error('Không thể phát âm thanh.');
     }
-  }, [stopAudio, prepareAudioContext]);
+  }, [stopAudio, unlockAudioContext]);
 
   useEffect(() => {
     // Cleanup function to close the AudioContext when the component unmounts.
@@ -386,7 +396,7 @@ function useAudioPlayer() {
     };
   }, [stopAudio]);
 
-  return { isPlaying, playAudio, stopAudio, prepareAudioContext };
+  return { isPlaying, playAudio, stopAudio, unlockAudioContext };
 }
 
 // --- Inlined from hooks/useAudioRecorder.ts ---
@@ -604,15 +614,15 @@ function PassageList({ studentInfo, onSelectPassage, onBackToWelcome }: PassageL
 // --- Inlined from components/ReadingView.tsx ---
 function ReadingView({ passage, onBack, onFinishRecording }) {
   const { isRecording, startRecording, stopRecording, error: recorderError } = useAudioRecorder();
-  const { isPlaying: isSamplePlaying, playAudio: playSampleAudio, stopAudio: stopSampleAudio, prepareAudioContext } = useAudioPlayer();
+  const { isPlaying: isSamplePlaying, playAudio: playSampleAudio, stopAudio: stopSampleAudio, unlockAudioContext } = useAudioPlayer();
   const [isGeneratingSpeech, setIsGeneratingSpeech] = useState(false);
   const [ttsError, setTtsError] = useState(null);
 
   const handleListenSample = async () => {
     if (isGeneratingSpeech || isRecording) return;
     
-    // Call prepareAudioContext synchronously at the start of the event handler
-    prepareAudioContext();
+    // Call unlockAudioContext synchronously at the start of the event handler
+    unlockAudioContext();
     
     stopSampleAudio();
     setIsGeneratingSpeech(true);
@@ -748,14 +758,14 @@ const SheetSaveStatusIndicator = ({ status }) => {
 };
 
 function EvaluationView({ result, studentInfo, passage, onChooseAnotherPassage, onReadAgain, sheetSaveStatus }) {
-    const { playAudio, isPlaying, prepareAudioContext } = useAudioPlayer();
+    const { playAudio, isPlaying, unlockAudioContext } = useAudioPlayer();
     const [loadingWord, setLoadingWord] = useState(null);
 
     const handlePlayWord = async (word) => {
         if (loadingWord || isPlaying) return; 
         
-        // Call prepareAudioContext synchronously at the start of the event handler
-        prepareAudioContext();
+        // Call unlockAudioContext synchronously at the start of the event handler
+        unlockAudioContext();
         
         setLoadingWord(word);
         try {
