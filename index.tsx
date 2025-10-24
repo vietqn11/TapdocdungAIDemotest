@@ -1,8 +1,7 @@
-
-
 // --- START OF INLINED SCRIPT ---
 // FIX: Cast window to `any` to polyfill process.env without TypeScript errors.
 (window as any).process = (window as any).process || { env: {} }; // Polyfill for process.env
+(window as any).process.env.API_KEY = 'AIzaSyBL42fp-nL0cAZYDc5etd0Ga5b4I3CoG7I';
 
 // --- External Imports ---
 import React, { useState, useRef, useCallback, useEffect } from 'https://esm.sh/react@18.2.0';
@@ -528,7 +527,8 @@ interface PassageCardProps {
 }
 
 // FIX: Moved PassageCard outside of PassageList to prevent re-definition on every render, which can cause subtle rendering bugs.
-const PassageCard = ({ passage, onSelect }: PassageCardProps) => (
+// FIX: Explicitly type PassageCard as a React.FC to resolve type errors with the special 'key' prop in JSX.
+const PassageCard: React.FC<PassageCardProps> = ({ passage, onSelect }) => (
     <button
         onClick={() => onSelect(passage)}
         className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl hover:bg-yellow-50 transition-all text-left transform hover:-translate-y-1 border border-gray-200"
@@ -1013,4 +1013,4 @@ root.render(
   </React.StrictMode>,
 );
 
-// --- END OF INLINED SCRIPT ------ START OF FILE types.ts ------ START OF FILE constants.ts ------ START OF FILE services/geminiService.ts ------ START OF FILE hooks/useAudioRecorder.ts ------ START OF FILE components/WelcomeScreen.tsx ------ START OF FILE components/PassageList.tsx ------ START OF FILE components/ReadingView.tsx ------ START OF FILE components/EvaluationView.tsx ------ START OF FILE components/Spinner.tsx ------ START OF FILE App.tsx ------ START OF FILE services/sheetService.ts ------ START OF FILE hooks/useAudioPlayer.ts ------ START OF FILE types.ts ------ START OF FILE constants.ts ------ START OF FILE services/geminiService.ts ------ START OF FILE hooks/useAudioRecorder.ts ------ START OF FILE components/WelcomeScreen.tsx ------ START OF FILE components/PassageList.tsx ------ START OF FILE components/ReadingView.tsx ------ START OF FILE components/EvaluationView.tsx ------ START OF FILE components/Spinner.tsx ------ START OF FILE App.tsx ------ START OF FILE services/sheetService.ts ------ START OF FILE hooks/useAudioPlayer.ts ---
+// --- END OF INLINED SCRIPT ------ START OF FILE types.ts ------ START OF FILE constants.ts ------ START OF FILE services/geminiService.ts ------ START OF FILE hooks/useAudioRecorder.ts ------ START OF FILE components/WelcomeScreen.tsx ------ START OF FILE components/PassageList.tsx ------ START OF FILE components/ReadingView.tsx ------ START OF FILE components/EvaluationView.tsx ------ START OF FILE components/Spinner.tsx ------ START OF FILE App.tsx ------ START OF FILE services/sheetService.ts ------ START OF FILE hooks/useAudioPlayer.ts ---
