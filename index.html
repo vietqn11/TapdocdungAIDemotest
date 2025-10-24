@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luyện đọc cho học sinh lớp 2</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.37.1/minified.js" integrity="sha512-3p3kHYB1SvjW1fZvTjLdaLx2Y/cRkWez+V3u2E5H0tH9scv23eI19NvwKkC0WlGfC31Vvj7g28v7aMvo11Jow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,15 +13,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- Babel for JSX and TS transpilation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script type="importmap">
-    {
-      "imports": {
-        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-        "react": "https://esm.sh/react@18.2.0",
-        "@google/genai": "https://esm.sh/@google/genai"
-      }
-    }
-    </script>
     <style>
       body {
         font-family: 'Nunito', sans-serif;
@@ -33,9 +25,9 @@
 // --- START OF INLINED SCRIPT ---
 
 // --- External Imports ---
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import ReactDOM from 'react-dom/client';
-import { GoogleGenAI, Type, Modality } from '@google/genai';
+import React, { useState, useRef, useCallback, useEffect } from 'https://esm.sh/react@18.2.0';
+import ReactDOM from 'https://esm.sh/react-dom@18.2.0/client';
+import { GoogleGenAI, Type, Modality } from 'https://esm.sh/@google/genai';
 
 // --- Inlined from types.ts ---
 // Note: TypeScript types are stripped by Babel during transpilation.
@@ -139,7 +131,7 @@ const READING_PASSAGES = [
 ];
 
 // --- Inlined from services/geminiService.ts ---
-const ai = new GoogleGenAI({ apiKey: 'AIzaSyBL42fp-nL0cAZYDc5etd0Ga5b4I3CoG7I' });
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const schema = {
     type: Type.OBJECT,
@@ -388,29 +380,36 @@ function useAudioRecorder() {
 
   const startRecording = useCallback(async () => {
     setError(null);
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      try {
+    if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder)) {
+        setError('Trình duyệt của bạn không hỗ trợ ghi âm. Vui lòng cập nhật hoặc dùng trình duyệt khác như Chrome, Firefox.');
+        return;
+    }
+
+    try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const mediaRecorder = new MediaRecorder(stream);
         mediaRecorderRef.current = mediaRecorder;
         
         mediaRecorder.ondataavailable = (event) => {
-          audioChunksRef.current.push(event.data);
+            audioChunksRef.current.push(event.data);
         };
         
         mediaRecorder.onstart = () => {
-          setIsRecording(true);
-          audioChunksRef.current = [];
+            setIsRecording(true);
+            audioChunksRef.current = [];
         };
 
         mediaRecorder.start();
 
-      } catch (err) {
+    } catch (err) {
         console.error('Error accessing microphone:', err);
-        setError('Không thể truy cập micro. Vui lòng cấp quyền sử dụng micro trong trình duyệt.');
-      }
-    } else {
-      setError('Trình duyệt không hỗ trợ ghi âm.');
+        let message = 'Không thể truy cập micro. Vui lòng cấp quyền sử dụng micro trong trình duyệt.';
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+            message = 'Bạn đã không cấp quyền sử dụng micro. Vui lòng làm mới trang và cho phép ứng dụng truy cập micro.';
+        } else if (err.name === 'NotFoundError') {
+            message = 'Không tìm thấy thiết bị micro nào trên máy của bạn.';
+        }
+        setError(message);
     }
   }, []);
 
@@ -991,6 +990,12 @@ root.render(
 );
 
 // --- END OF INLINED SCRIPT ---
+    </script>
+    <script nomodule>
+      document.body.innerHTML = '<div style="text-align: center; padding: 40px; font-family: \'Nunito\', sans-serif; color: #333;">' +
+        '<h1 style="font-size: 24px; font-weight: bold;">Trình duyệt của bạn đã quá cũ</h1>' +
+        '<p style="font-size: 16px; margin-top: 10px;">Để sử dụng ứng dụng, vui lòng cập nhật trình duyệt hoặc sử dụng một trình duyệt hiện đại hơn như Google Chrome hoặc Firefox.</p>' +
+      '</div>';
     </script>
   </body>
 </html>
